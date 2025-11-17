@@ -9,6 +9,10 @@ from .serializer import UserSerializer,UserRegisterSerializer
 from .models import User
 # Create your views here.
 
+#NOTES :
+# - maybe i will send tokens in an HttpOnlyCookie later 
+
+
 @api_view(['POST'])
 @permission_classes([AllowAny]) 
 def register(request) :
