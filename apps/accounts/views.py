@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
+from django.contrib.auth import authenticate
 from .serializer import UserSerializer,UserRegisterSerializer
 from .models import User
 # Create your views here.
@@ -24,8 +25,29 @@ def register(request) :
         )
     return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['POST'])
+@permission_classes([AllowAny]) 
+def login(request) :
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    user = authenticate(username=email ,password=password)
+
+    if user :
+        refresh = RefreshToken.for_user(user)
+        return Response(
+            {
+                "access" : str(refresh.access_token),
+                "refresh" : str(refresh)
+            },
+            status=status.HTTP_202_ACCEPTED
+        )
+    return Response({"message" : "invalid credentials "}, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET'])
 @permission_classes([AllowAny]) 
+#for testing only
 def get_users(request) :
     users= User.objects.all()
     serializer = UserSerializer(users, many=True)
