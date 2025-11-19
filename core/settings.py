@@ -91,11 +91,14 @@ print(env("NAME"))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': env("NAME"),
-        'USER' : env('USER'),
-        'PASSWORD' : env('PASSWORD'),
-        'HOST': env('HOST'),
-        'PORT': env('PORT'),                   
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST', default='localhost'),
+        'PORT': env('DATABASE_PORT', default='3306'),
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
