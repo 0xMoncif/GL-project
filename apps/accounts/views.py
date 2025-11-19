@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -13,47 +14,50 @@ from .models import User
 # - maybe i will send tokens in an HttpOnlyCookie later 
 
 
-@api_view(['POST'])
-@permission_classes([AllowAny]) 
-def register(request) :
-    serializer = UserRegisterSerializer(data=request.data)
-    if serializer.is_valid() :
-        user = serializer.save()
-        refresh = RefreshToken.for_user(user)
-        return Response(
+class UserView(APIView) :
+    permission_classes = [AllowAny]
+
+    def get(self,request) :
+        users= User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+
+class RegisterView(APIView) :
+    permission_classes = [AllowAny]
+
+    def post(self,request) :
+        serializer = UserRegisterSerializer(data=request.data)
+        if serializer.is_valid() :
+            user = serializer.save()
+            refresh = RefreshToken.for_user(user)
+            return Response(
             {
                 "access" : str(refresh.access_token),
                 "refresh" : str(refresh)
             },
             status=status.HTTP_201_CREATED
         )
-    return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
-@permission_classes([AllowAny]) 
-def login(request) :
-    email = request.data.get('email')
-    password = request.data.get('password')
+class LoginView(APIView) :
+    permission_classes = [AllowAny]
 
-    user = authenticate(username=email ,password=password)
+    def post(self,request) :
+        email = request.data.get('email')
+        password = request.data.get('password')
 
-    if user :
-        refresh = RefreshToken.for_user(user)
-        return Response(
-            {
-                "access" : str(refresh.access_token),
-                "refresh" : str(refresh)
-            },
-            status=status.HTTP_202_ACCEPTED
-        )
-    return Response({"message" : "invalid credentials "}, status=status.HTTP_400_BAD_REQUEST)
+        user = authenticate(username=email ,password=password)
 
-
-@api_view(['GET'])
-@permission_classes([AllowAny]) 
-#for testing only
-def get_users(request) :
-    users= User.objects.all()
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
+        if user :
+            refresh = RefreshToken.for_user(user)
+            return Response(
+                {
+                    "access" : str(refresh.access_token),
+                    "refresh" : str(refresh)
+                },
+                status=status.HTTP_202_ACCEPTED
+            )
+        return Response({"message" : "invalid credentials "}, status=status.HTTP_400_BAD_REQUEST)
+        
 
