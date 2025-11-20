@@ -85,7 +85,6 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 SECRET_KEY = env("SECRET_KEY")
 
-print(env("NAME"))
 
 
 DATABASES = {
@@ -165,3 +164,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# for media files( profile pics , any file uploaded by the user)
+MEDIA_URL='/media/'
+MEDIA_ROOT= BASE_DIR / 'media'
+
