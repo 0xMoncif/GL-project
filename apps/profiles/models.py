@@ -1,5 +1,6 @@
 from django.db import models
 from apps.accounts.models import User
+from apps.catalog.models import *
 
 
 class StudentProfile (models.Model):
@@ -12,6 +13,9 @@ class StudentProfile (models.Model):
     bio= models.TextField(blank=True ,null=True)
     is_Profile_Public = models.BooleanField(default=False)
     updated_at = models.DateField(auto_now=True)
+    domain = models.ForeignKey(Domain, on_delete=models.SET_NULL, null=True, related_name="students")   #set_null means if the domain is deleted, the student record won't 
+    specialty = models.ForeignKey(Specialty, on_delete=models.SET_NULL, null=True, related_name="students")
+    institution = models.ForeignKey(Institution, on_delete=models.SET_NULL, null=True, related_name="students")
  
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
