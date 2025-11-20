@@ -7,7 +7,8 @@ class StudentProfileSerializer(serializers.ModelSerializer):
         model = StudentProfile
         fields = [
             'first_name', 'last_name', 'cv_pdf','profile_picture'
-            'headline', 'bio', 'is_profile_public'
+            'headline', 'bio', 'is_profile_public','domain','speciality',
+            'institution'
         ]
 
 class CompanyProfileSerializer(serializers.ModelSerializer):

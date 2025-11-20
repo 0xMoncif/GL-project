@@ -48,6 +48,10 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.profiles', 
     'apps.offers',
+    'apps.condidatures',
+    'apps.catalog',
+    'apps.notifications',
+    'apps.adminPanel'
 ]
 
 MIDDLEWARE = [
