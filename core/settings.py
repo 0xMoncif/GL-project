@@ -85,7 +85,6 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 SECRET_KEY = env("SECRET_KEY")
 
-# print(env("NAME"))
 
 
 DATABASES = {
