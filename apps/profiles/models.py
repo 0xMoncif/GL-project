@@ -21,7 +21,7 @@ class StudentProfile (models.Model):
         return f"{self.first_name} {self.last_name}"
 
 class CompanyProfile (models.Model):
-    user=models.OneToOneField(User, on_delete= models.CASCADE)
+    user=models.OneToOneField(User, on_delete= models.CASCADE, related_name= 'companyProfile')
     company_name = models.CharField(max_length=50, null= False)
     phone_nbr= models.CharField(max_length=15, blank=True)
     description= models.TextField(blank=True, null=True)
