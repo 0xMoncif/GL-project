@@ -2,6 +2,11 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from .models import Offer
 from .serializers import OfferSerializer
 from .permissions import IsCompany, IsOfferOwner
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
 
 # class OfferCreateView(CreateAPIView):
 #     queryset = Offer.objects.all()
@@ -48,3 +53,29 @@ class OfferDetailAPIView(RetrieveUpdateDestroyAPIView):
         if self.request.method in ["PUT", "PATCH", "DELETE"]:
             return [IsOfferOwner()]  
         return []   
+ 
+
+class PublishOfferAPIView(APIView):
+    permission_classes = [IsOfferOwner]
+
+    def post(self, request, pk):
+        offer = Offer.objects.get(pk=pk)
+        self.check_object_permissions(request, offer)
+
+        offer.is_active = True
+        offer.save()
+
+        return Response({"message": "Offer published."}, status=status.HTTP_200_OK)
+
+
+class ArchiveOfferAPIView(APIView):
+    permission_classes = [IsOfferOwner]
+
+    def post(self, request, pk):
+        offer = Offer.objects.get(pk=pk)
+        self.check_object_permissions(request, offer)
+
+        offer.is_active = False
+        offer.save()
+
+        return Response({"message": "Offer archived."}, status=status.HTTP_200_OK)
