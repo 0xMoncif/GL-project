@@ -10,3 +10,8 @@ PyJWT==2.10.1
 python-decouple==3.8
 sqlparse==0.5.3
 django-environ=0.12.0
+python-dotenv==1.2.1
+
+# pour le formatage et le linting 
+black
+ruff 
