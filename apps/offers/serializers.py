@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Offer
-from catalog.models import Institution
+from ..catalog.models import Institution
 
 # class OfferSerializer(serializers.ModelSerializer):
 #     class Meta:
