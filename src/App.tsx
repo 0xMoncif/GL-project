@@ -1,9 +1,10 @@
-import { NavBar } from "@components";
+import { LandingPage } from "@components";
 // test
 function App() {
   return (
     <>
-      <NavBar />
+      <LandingPage />
+      <div>hello world</div>
     </>
   );
 }

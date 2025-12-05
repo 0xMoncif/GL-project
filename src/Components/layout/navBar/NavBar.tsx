@@ -8,7 +8,7 @@ export const NavBar = () => {
   const BaseTextClasses = "font-[700] text-[20px] cursor-pointer";
 
   return (
-    <nav className="flex items-center justify-between bg-black bg-opacity-60 rounded-b-[30px] h-[110px]">
+    <nav className="flex items-center justify-between bg-[#FBF6F699] bg-opacity-60 rounded-b-[30px] h-[110px] ">
       <div className="flex items-center gap-[19px] pl-[30px] pt-[9.44px] pb-[24.86px]">
         <img src={logo} alt="Logo" className="w-[59.67px] h-[75.7px]" />
         <div className="pt-4">

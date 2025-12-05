@@ -31,6 +31,7 @@
       "@types": ["src/types/index"],
       "@types/*": ["src/types/*"],
       "@components": ["src/Components/index"],
+      "@assets": ["src/assets/"],
     }
   },
   "include": ["src"]
