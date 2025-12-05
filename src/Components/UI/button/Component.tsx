@@ -26,15 +26,13 @@ export const Button = ({
     large: "w-[455px] h-[70px] text-[24px] font-[800]",
   };
   return (
-    <div className="bg-[#DCA934]">
-      <button
-        className={`${className} ${buttonVariants[variant]} ${buttonSizes[size]} ${baseButtonClasses}`}
-        onClick={onCLick}
-        onMouseOver={onHover}
-        disabled={disabled}
-      >
-        {children}
-      </button>
-    </div>
+    <button
+      className={`${className} ${buttonVariants[variant]} ${buttonSizes[size]} ${baseButtonClasses}`}
+      onClick={onCLick}
+      onMouseOver={onHover}
+      disabled={disabled}
+    >
+      {children}
+    </button>
   );
 };
