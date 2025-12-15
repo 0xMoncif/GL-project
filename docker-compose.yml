@@ -1,0 +1,86 @@
+version: "3.8"
+
+services:
+  # ==================== BACKEND SERVICES ====================
+  backend:
+    build:
+      context: ./back  # Point to backend folder
+      dockerfile: Dockerfile
+    container_name: dz_stagiaire_backend
+    command: >
+      sh -c "
+        echo 'Waiting for MySQL to be ready...' &&
+        while ! nc -z mysql 3306; do
+          sleep 2
+          echo 'Still waiting for MySQL...'
+        done &&
+        echo 'MySQL is ready! Starting Django...' &&
+        python manage.py runserver 0.0.0.0:8000
+      "
+    env_file:
+      - .env # Backend's .env file
+    volumes:
+      - ./back:/app  # Mount backend code
+    ports:
+      - "8000:8000"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:  # ← ADD HEALTHCHECK FOR FRONTEND
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: dz_stagiaire_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DATABASE_NAME}
+      MYSQL_USER: ${DATABASE_USER}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+      start_period: 30s
+    networks:
+      - app-network
+
+  # ==================== FRONTEND SERVICE ====================
+  frontend:
+    build:
+      context: ./front  # Point to frontend folder
+      dockerfile: Dockerfile
+    container_name: dz_stagiaire_front
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./front:/app  # Mount frontend code
+      - /app/node_modules  # Preserve container node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - VITE_API_URL=http://localhost:8000/api  # Point to backend
+    depends_on:
+      backend:
+        condition: service_healthy 
+
+    networks:
+      - app-network
+
+# ==================== VOLUMES & NETWORKS ====================
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge
