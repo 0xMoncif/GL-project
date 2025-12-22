@@ -1,4 +1,4 @@
-version: "3.8"
+
 
 services:
   # ==================== BACKEND SERVICES ====================
@@ -7,18 +7,9 @@ services:
       context: ./back  # Point to backend folder
       dockerfile: Dockerfile
     container_name: dz_stagiaire_backend
-    command: >
-      sh -c "
-        echo 'Waiting for MySQL to be ready...' &&
-        while ! nc -z mysql 3306; do
-          sleep 2
-          echo 'Still waiting for MySQL...'
-        done &&
-        echo 'MySQL is ready! Starting Django...' &&
-        python manage.py runserver 0.0.0.0:8000
-      "
+    command: python manage.py runserver 0.0.0.0:8000
     env_file:
-      - .env # Backend's .env file
+      - ./back/.env # Backend's .env file
     volumes:
       - ./back:/app  # Mount backend code
     ports:
