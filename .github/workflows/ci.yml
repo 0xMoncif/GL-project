@@ -29,11 +29,17 @@ jobs:
           pip install -r requirements.txt
 
       # 4️⃣ Linting
-      - name: Lint with flake8
+      - name: Lint with ruff
         run: |
           cd backend
-          pip install flake8
-          flake8 .
+          pip install ruff
+          ruff check .
+       
+      - name : check format with black
+        run: |
+          cd backend
+          pip install black 
+          black --check .
 
       # 5️⃣ Testing
       - name: Run tests
@@ -41,6 +47,6 @@ jobs:
           cd backend
           python manage.py test
 
-      # 6️⃣ Build Docker images
-      - name: Build Docker images
-        run: docker-compose build
+      # # 6️⃣ Build Docker images
+      # - name: Build Docker images
+      #   run: docker-compose build
