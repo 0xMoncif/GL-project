@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import Offer
+
 from ..catalog.models import Institution
+from .models import Offer
 
 # class OfferSerializer(serializers.ModelSerializer):
 #     class Meta:
@@ -10,16 +11,28 @@ from ..catalog.models import Institution
 
 
 class OfferSerializer(serializers.ModelSerializer):
-    institutions = serializers.PrimaryKeyRelatedField(queryset=Institution.objects.all(),many=True)
+    institutions = serializers.PrimaryKeyRelatedField(
+        queryset=Institution.objects.all(), many=True
+    )
 
     class Meta:
         model = Offer
         fields = [
-            'id', 'title', 'description', 'offer_type', 'created_at',
-            'end_date', 'is_active', 'image', 'pdf',
-            'domain', 'specialty', 'required_skills', 'institutions'
+            "id",
+            "title",
+            "description",
+            "offer_type",
+            "created_at",
+            "end_date",
+            "is_active",
+            "image",
+            "pdf",
+            "domain",
+            "specialty",
+            "required_skills",
+            "institutions",
         ]
-        read_only_fields = ['company', 'is_active', 'created_at']
+        read_only_fields = ["company", "is_active", "created_at"]
 
     def create(self, validated_data):
         institutions = validated_data.pop("institutions", [])

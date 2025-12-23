@@ -14,21 +14,23 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
+
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
 from django.http import JsonResponse
+from django.urls import include, path
+
 
 def health_check(request):
-    return JsonResponse({"status":"healthy"})
+    return JsonResponse({"status": "healthy"})
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/auth/',include('apps.accounts.urls')),
-    path('profile/',include('apps.profiles.urls')),
-    path('offer/',include('apps.offers.urls')),
-    path('health/', health_check, name='health_check'),
-
+    path("admin/", admin.site.urls),
+    path("api/auth/", include("apps.accounts.urls")),
+    path("profile/", include("apps.profiles.urls")),
+    path("offer/", include("apps.offers.urls")),
+    path("health/", health_check, name="health_check"),
     # path('catalog/',include('apps.catalog.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

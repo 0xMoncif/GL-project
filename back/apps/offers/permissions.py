@@ -1,13 +1,14 @@
 from rest_framework.permissions import BasePermission
 
+
 class IsCompany(BasePermission):
 
     def has_permission(self, request, view):
 
         return (
-            request.user 
-            and request.user.is_authenticated 
-            and request.user.user_type=='company'
+            request.user
+            and request.user.is_authenticated
+            and request.user.user_type == "company"
         )
 
 
@@ -21,7 +22,7 @@ class IsStudent(BasePermission):
     def has_permission(self, request, view):
 
         return (
-            request.user 
-            and request.user.is_authenticated 
-            and request.user.user_type=='student'
+            request.user
+            and request.user.is_authenticated
+            and request.user.user_type == "student"
         )
