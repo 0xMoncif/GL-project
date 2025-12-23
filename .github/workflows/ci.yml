@@ -44,7 +44,7 @@ jobs:
       # 5️⃣ Testing
       - name: Run tests
         run: |
-          cd backend
+          cd back
           python manage.py test
 
       # # 6️⃣ Build Docker images
