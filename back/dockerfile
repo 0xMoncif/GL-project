@@ -2,6 +2,22 @@
 # Use official Python 3.13 image
 FROM python:3.13.7-slim
 
+# Build-time arguments with default values for CI
+ARG SECRET_KEY=ci_dummy_secret
+ARG DATABASE_NAME=ci_db
+ARG DATABASE_USER=ci_user
+ARG DATABASE_PASSWORD=ci_pass
+ARG DATABASE_HOST=localhost
+ARG DATABASE_PORT=3306
+
+# Map build-time arguments to runtime environment variables
+ENV SECRET_KEY=$SECRET_KEY
+ENV DATABASE_NAME=$DATABASE_NAME
+ENV DATABASE_USER=$DATABASE_USER
+ENV DATABASE_PASSWORD=$DATABASE_PASSWORD
+ENV DATABASE_HOST=$DATABASE_HOST
+ENV DATABASE_PORT=$DATABASE_PORT
+
 # Set working directory inside container
 WORKDIR /app
 
